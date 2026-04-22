@@ -10,6 +10,7 @@ use super::SphericalJoint;
 
 /// Wrapper enum over a specific joint.
 #[derive(Clone, Copy, Debug, PartialEq)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub enum TypedJoint {
     /// See [`FixedJoint`]
     FixedJoint(FixedJoint),
@@ -78,6 +79,7 @@ pub struct RapierMultibodyJointHandle(pub MultibodyJointHandle);
 /// rigid-body (this is similar to the technique used to attach multiple
 /// colliders to the same rigid-body).
 #[derive(Copy, Clone, Debug, PartialEq, Component)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct ImpulseJoint {
     /// The entity containing the rigid-body used as the first endpoint of this joint.
     pub parent: Entity,
@@ -105,6 +107,7 @@ impl ImpulseJoint {
 /// If a closed loop is detected, the last joint that closes the loop is ignored, and an
 /// error is printed to `stderr` (using `log::error!`).
 #[derive(Copy, Clone, Debug, PartialEq, Component)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct MultibodyJoint {
     /// The entity containing the rigid-body used as the first endpoint of this joint.
     pub parent: Entity,
