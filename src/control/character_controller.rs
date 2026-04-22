@@ -7,26 +7,9 @@ pub use rapier::control::CharacterAutostep;
 pub use rapier::control::CharacterLength;
 use rapier::prelude::{ColliderSet, QueryFilterFlags};
 
-/// Default value for `CharacterLength` used when deserializing skipped fields.
-#[cfg(feature = "serde-serialize")]
-fn default_character_length() -> CharacterLength {
-    CharacterLength::Relative(0.0)
-}
-
-/// Default value for `Option<CharacterAutostep>` used when deserializing skipped fields.
-#[cfg(feature = "serde-serialize")]
-fn default_autostep() -> Option<CharacterAutostep> {
-    None
-}
-
-/// Default value for `QueryFilterFlags` used when deserializing skipped fields.
-#[cfg(feature = "serde-serialize")]
-fn default_query_filter_flags() -> QueryFilterFlags {
-    QueryFilterFlags::default()
-}
-
 /// A collision between the character and its environment during its movement.
 #[derive(Copy, Clone, PartialEq, Debug)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct CharacterCollision {
     /// The entity hit by the character.
     pub entity: Entity,
@@ -81,12 +64,10 @@ pub struct MoveShapeOptions {
     ///
     /// This value should not be too large to avoid visual artifacts, but shouldn't be too small
     /// (must not be zero) to improve numerical stability of the character controller.
-    #[cfg_attr(feature = "serde-serialize", serde(skip, default = "default_character_length"))]
     pub offset: CharacterLength,
     /// Should the character try to slide against the floor if it hits it?
     pub slide: bool,
     /// Should the character automatically step over small obstacles?
-    #[cfg_attr(feature = "serde-serialize", serde(skip, default = "default_autostep"))]
     pub autostep: Option<CharacterAutostep>,
     /// The maximum angle (radians) between the floor's normal and the `up` vector that the
     /// character is able to climb.
@@ -98,7 +79,6 @@ pub struct MoveShapeOptions {
     pub apply_impulse_to_dynamic_bodies: bool,
     /// Should the character be automatically snapped to the ground if the distance between
     /// the ground and its feet are smaller than the specified threshold?
-    #[cfg_attr(feature = "serde-serialize", serde(skip, default = "default_character_length"))]
     pub snap_to_ground: Option<CharacterLength>,
     /// Increase this number if your character appears to get stuck when sliding against surfaces.
     ///
@@ -149,12 +129,10 @@ pub struct KinematicCharacterController {
     ///
     /// This value should not be too large to avoid visual artifacts, but shouldn't be too small
     /// (must not be zero) to improve numerical stability of the character controller.
-    #[cfg_attr(feature = "serde-serialize", serde(skip))]
     pub offset: CharacterLength,
     /// Should the character try to slide against the floor if it hits it?
     pub slide: bool,
     /// Should the character automatically step over small obstacles?
-    #[cfg_attr(feature = "serde-serialize", serde(skip))]
     pub autostep: Option<CharacterAutostep>,
     /// The maximum angle (radians) between the floor's normal and the `up` vector that the
     /// character is able to climb.
@@ -166,11 +144,9 @@ pub struct KinematicCharacterController {
     pub apply_impulse_to_dynamic_bodies: bool,
     /// Should the character be automatically snapped to the ground if the distance between
     /// the ground and its feet are smaller than the specified threshold?
-    #[cfg_attr(feature = "serde-serialize", serde(skip, default = "default_character_length"))]
     pub snap_to_ground: Option<CharacterLength>,
     /// Flags for filtering-out some categories of entities from the environment seen by the
     /// character controller.
-    #[cfg_attr(feature = "serde-serialize", serde(skip, default = "default_query_filter_flags"))]
     pub filter_flags: QueryFilterFlags,
     /// Groups for filtering-out some colliders from the environment seen by the character
     /// controller.
@@ -244,7 +220,6 @@ pub struct KinematicCharacterControllerOutput {
     /// The translation calculated by the last character control step taking obstacles into account.
     pub effective_translation: Vect,
     /// Collisions between the character and obstacles found in its path.
-    #[cfg_attr(feature = "serde-serialize", serde(skip, default = "default_collisions"))]
     pub collisions: Vec<CharacterCollision>,
     /// Indicates whether the shape is sliding down a slope after its kinematic movement.
     pub is_sliding_down_slope: bool,

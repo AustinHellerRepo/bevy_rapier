@@ -78,6 +78,7 @@ impl RayIntersection {
 
 /// The result of a shape cast.
 #[derive(Copy, Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct ShapeCastHit {
     /// The time at which the objects touch.
     pub time_of_impact: Real,
@@ -92,6 +93,7 @@ pub struct ShapeCastHit {
 
 /// In depth information about a shape-cast hit.
 #[derive(Copy, Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct ShapeCastHitDetails {
     /// The local-space closest point on the first shape at the time of impact.
     pub witness1: Vect,
