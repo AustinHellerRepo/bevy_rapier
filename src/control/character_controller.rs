@@ -226,6 +226,7 @@ pub struct KinematicCharacterControllerOutput {
 }
 
 /// The allowed movement computed by `RapierContext::move_shape`.
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct MoveShapeOutput {
     /// Indicates whether the shape is grounded after its kinematic movement.
     pub grounded: bool,

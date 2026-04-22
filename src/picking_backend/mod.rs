@@ -19,6 +19,7 @@ use rapier::parry::query::DefaultQueryDispatcher;
 
 /// How a ray cast should handle [`Visibility`].
 #[derive(Clone, Copy, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub enum RapierCastVisibility {
     /// Completely ignore visibility checks. Hidden items can still be ray casted against.
     Any,
@@ -28,6 +29,7 @@ pub enum RapierCastVisibility {
 /// Runtime settings for the [`RapierPickingPlugin`].
 #[derive(Resource, Reflect)]
 #[reflect(Resource, Default)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct RapierPickingSettings {
     /// When set to `true` ray casting will only happen between cameras and entities marked with
     /// [`RapierPickable`]. `false` by default.

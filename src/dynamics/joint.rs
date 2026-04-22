@@ -65,6 +65,7 @@ pub struct RapierImpulseJointHandle(pub ImpulseJointHandle);
 
 /// The handle of a multibody joint added to the physics scene.
 #[derive(Copy, Clone, Debug, Component)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct RapierMultibodyJointHandle(pub MultibodyJointHandle);
 
 /// An impulse-based joint attached to two entities.

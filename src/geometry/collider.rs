@@ -26,11 +26,13 @@ pub struct RapierColliderHandle(pub ColliderHandle);
 /// A component which will be replaced by the specified collider type after the referenced mesh become available.
 #[cfg(all(feature = "dim3", feature = "async-collider"))]
 #[derive(Component, Debug, Clone, Default)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct AsyncCollider(pub ComputedColliderShape);
 
 /// A component which will be replaced the specified collider types on children with meshes after the referenced scene become available.
 #[cfg(all(feature = "dim3", feature = "async-collider"))]
 #[derive(Component, Debug, Clone)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct AsyncSceneCollider {
     /// Collider type for each scene mesh not included in [`Self::named_shapes`]. If [`None`], then all
     /// shapes will be skipped for processing except [`Self::named_shapes`].
@@ -53,6 +55,7 @@ impl Default for AsyncSceneCollider {
 /// Shape type based on a Bevy mesh asset.
 #[cfg(all(feature = "dim3", feature = "async-collider"))]
 #[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub enum ComputedColliderShape {
     /// Triangle-mesh.
     TriMesh(TriMeshFlags),
