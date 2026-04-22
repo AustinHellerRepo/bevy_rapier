@@ -35,6 +35,7 @@ use crate::prelude::{
 
 /// Difference between simulation and rendering time
 #[derive(Component, Default, Reflect, Clone)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct SimulationToRenderTime {
     /// Difference between simulation and rendering time
     pub diff: f32,
@@ -50,6 +51,7 @@ pub struct SimulationToRenderTime {
 ///
 /// See the list of full components in [`RapierContext`]
 #[derive(Component, Reflect, Debug, Clone, Copy)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct DefaultRapierContext;
 
 /// This is a component applied to any entity containing a rapier handle component.
@@ -57,6 +59,7 @@ pub struct DefaultRapierContext;
 /// and others from [`crate::plugin::context`], responsible for handling
 /// its rapier data.
 #[derive(Component, Reflect, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct RapierContextEntityLink(pub Entity);
 
 /// The set of colliders part of the simulation.

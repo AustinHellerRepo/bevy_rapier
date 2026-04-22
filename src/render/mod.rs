@@ -17,10 +17,12 @@ use crate::prelude::Collider;
 /// force to a specific value the color used to render the
 /// collider.
 #[derive(Copy, Clone, Component, PartialEq, Debug, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct ColliderDebugColor(pub Hsla);
 
 /// Overrides the global [`DebugRenderContext`] for a single collider.
 #[derive(Copy, Clone, Reflect, Component, Eq, PartialEq, Default, Debug)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub enum ColliderDebug {
     /// Always render the debug gizmos for this collider, regardless of global config.
     #[default]

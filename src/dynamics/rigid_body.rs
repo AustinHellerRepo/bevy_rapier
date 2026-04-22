@@ -10,6 +10,7 @@ use rapier::dynamics::IntegrationParameters;
 
 /// The Rapier handle of a [`RigidBody`] that was inserted to the physics scene.
 #[derive(Copy, Clone, Debug, Component)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct RapierRigidBodyHandle(pub RigidBodyHandle);
 
 /// A [`RigidBody`].
@@ -78,7 +79,7 @@ impl From<RigidBodyType> for RigidBody {
 /// The velocity of a [`RigidBody`].
 ///
 /// Use this component to control and/or read the velocity of a dynamic or kinematic [`RigidBody`].
-/// If this component isn’t present, a dynamic [`RigidBody`] will still be able to move (you will just
+/// If this component isn't present, a dynamic [`RigidBody`] will still be able to move (you will just
 /// not be able to read/modify its velocity).
 ///
 /// This only affects entities with a [`RigidBody`] component.
@@ -157,7 +158,7 @@ impl Velocity {
 #[derive(Copy, Clone, Debug, PartialEq, Component, Reflect)]
 #[reflect(Component, Default, PartialEq)]
 pub enum AdditionalMassProperties {
-    /// This mass will be added to the [`RigidBody`]. The rigid-body’s total
+    /// This mass will be added to the [`RigidBody`]. The rigid-body's total
     /// angular inertia tensor (obtained from its attached colliders) will
     /// be scaled accordingly.
     Mass(f32),
@@ -174,12 +175,13 @@ impl Default for AdditionalMassProperties {
 /// Center-of-mass, mass, and angular inertia.
 ///
 /// When this is used as a component, this lets you read the total mass properties of
-/// a [`RigidBody`] (including the colliders contribution). Modifying this component won’t
-/// affect the mass-properties of the [`RigidBody`] (the attached colliders’ `ColliderMassProperties`
+/// a [`RigidBody`] (including the colliders contribution). Modifying this component won't
+/// affect the mass-properties of the [`RigidBody`] (the attached colliders' `ColliderMassProperties`
 /// and the `AdditionalMassProperties` should be modified instead).
 ///
 /// This only reads the mass from entities with a [`RigidBody`] component.
 #[derive(Copy, Clone, Debug, Default, PartialEq, Component, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Component, Default, PartialEq)]
 pub struct ReadMassProperties(MassProperties);
 
@@ -213,9 +215,10 @@ impl From<Entity> for MassModifiedEvent {
 
 /// Center-of-mass, mass, and angular inertia.
 ///
-/// This cannot be used as a component. Use the components `ReadMassProperties` to read a [`RigidBody`]’s
+/// This cannot be used as a component. Use the components `ReadMassProperties` to read a [`RigidBody`]'s
 /// mass-properties or `AdditionalMassProperties` to set its additional mass-properties.
 #[derive(Copy, Clone, Debug, Default, PartialEq, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Default, PartialEq)]
 pub struct MassProperties {
     /// The center of mass of a [`RigidBody`] expressed in its local-space.
@@ -234,7 +237,7 @@ pub struct MassProperties {
 }
 
 impl MassProperties {
-    /// Converts these mass-properties to Rapier’s `MassProperties` structure.
+    /// Converts these mass-properties to Rapier's `MassProperties` structure.
     #[cfg(feature = "dim2")]
     pub fn into_rapier(self) -> rapier::dynamics::MassProperties {
         rapier::dynamics::MassProperties::new(
@@ -245,7 +248,7 @@ impl MassProperties {
         )
     }
 
-    /// Converts these mass-properties to Rapier’s `MassProperties` structure.
+    /// Converts these mass-properties to Rapier's `MassProperties` structure.
     #[cfg(feature = "dim3")]
     pub fn into_rapier(self) -> rapier::dynamics::MassProperties {
         rapier::dynamics::MassProperties::with_principal_inertia_frame(
@@ -256,7 +259,7 @@ impl MassProperties {
         )
     }
 
-    /// Converts Rapier’s `MassProperties` structure to `Self`.
+    /// Converts Rapier's `MassProperties` structure to `Self`.
     pub fn from_rapier(mprops: rapier::dynamics::MassProperties) -> Self {
         #[allow(clippy::useless_conversion)] // Need to convert if dim3 enabled
         Self {
@@ -270,6 +273,7 @@ impl MassProperties {
 }
 
 #[derive(Default, Debug, Component, Reflect, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Component, Default, PartialEq)]
 /// Flags affecting the behavior of the constraints solver for a given contact manifold.
 pub struct LockedAxes(u8);
@@ -305,6 +309,7 @@ impl From<LockedAxes> for RapierLockedAxes {
 ///
 /// This force is applied at each timestep.
 #[derive(Copy, Clone, Debug, Default, PartialEq, Component, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Component, Default, PartialEq)]
 pub struct ExternalForce {
     /// The linear force applied to the [`RigidBody`].
@@ -375,8 +380,9 @@ impl SubAssign for ExternalForce {
 /// Instantaneous external impulse applied continuously to a [`RigidBody`].
 ///
 /// The impulse is only applied once, and whenever it it modified (based
-/// on Bevy’s change detection).
+/// on Bevy's change detection).
 #[derive(Copy, Clone, Debug, Default, PartialEq, Component, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Component, Default, PartialEq)]
 pub struct ExternalImpulse {
     /// The linear impulse applied to the [`RigidBody`].
@@ -452,6 +458,7 @@ impl SubAssign for ExternalImpulse {
 /// Gravity is multiplied by this scaling factor before it's
 /// applied to this [`RigidBody`].
 #[derive(Copy, Clone, Debug, PartialEq, Component, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Component, Default, PartialEq)]
 pub struct GravityScale(pub f32);
 
@@ -463,6 +470,7 @@ impl Default for GravityScale {
 
 /// Information used for Continuous-Collision-Detection.
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Component, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Component, Default, PartialEq)]
 pub struct Ccd {
     /// Is CCD enabled for this [`RigidBody`]?
@@ -488,13 +496,14 @@ impl Ccd {
 ///
 /// When set to 0, soft-CCD is disabled. Soft-CCD helps prevent tunneling especially of
 /// slow-but-thin to moderately fast objects. The soft CCD prediction distance indicates how
-/// far in the object’s path the CCD algorithm is allowed to inspect. Large values can impact
+/// far in the object's path the CCD algorithm is allowed to inspect. Large values can impact
 /// performance badly by increasing the work needed from the broad-phase.
 ///
 /// It is a generally cheaper variant of regular CCD (that can be enabled with
 /// [`rapier::dynamics::RigidBody::enable_ccd`] since it relies on predictive constraints instead of
 /// shape-cast and substeps.
 #[derive(Copy, Clone, Debug, Default, PartialEq, Component, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Component, Default, PartialEq)]
 pub struct SoftCcd {
     /// The soft CCD prediction distance.
@@ -503,6 +512,7 @@ pub struct SoftCcd {
 
 /// The dominance groups of a [`RigidBody`].
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Component, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Component, Default, PartialEq)]
 pub struct Dominance {
     // FIXME: rename this to `group` (no `s`).
@@ -522,6 +532,7 @@ impl Dominance {
 /// This controls whether a body is sleeping or not.
 /// If the threshold is negative, the body never sleeps.
 #[derive(Copy, Clone, Debug, PartialEq, Component, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Component, Default, PartialEq)]
 pub struct Sleeping {
     /// The linear velocity below which the body can fall asleep.
@@ -558,6 +569,7 @@ impl Default for Sleeping {
 
 /// Damping factors to gradually slow down a [`RigidBody`].
 #[derive(Copy, Clone, Debug, PartialEq, Component, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Component, Default, PartialEq)]
 pub struct Damping {
     // TODO: rename these to "linear" and "angular"?
@@ -580,6 +592,7 @@ impl Default for Damping {
 /// the associated [`RigidBody`] will have its position automatically interpolated
 /// between the last two [`RigidBody`] positions set by the physics engine.
 #[derive(Copy, Clone, Debug, Default, PartialEq, Component)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct TransformInterpolation {
     /// The starting point of the interpolation.
     pub start: Option<Isometry<f32>>,
@@ -600,6 +613,7 @@ impl TransformInterpolation {
 
 /// Indicates whether or not the [`RigidBody`] is disabled explicitly by the user.
 #[derive(Copy, Clone, Default, Debug, PartialEq, Eq, Component, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Component, Default, PartialEq)]
 pub struct RigidBodyDisabled;
 
@@ -613,5 +627,6 @@ pub struct RigidBodyDisabled;
 /// The default value is 0, meaning exactly [`IntegrationParameters::num_solver_iterations`] will
 /// be used as number of solver iterations for this body.
 #[derive(Copy, Clone, Default, Debug, PartialEq, Eq, Component, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Component, Default, PartialEq)]
 pub struct AdditionalSolverIterations(pub usize);

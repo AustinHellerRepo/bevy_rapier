@@ -56,6 +56,7 @@ impl Default for RapierPickingSettings {
 ///
 /// Only needed if [`RapierPickingSettings::require_markers`] is set to `true`, and ignored otherwise.
 #[derive(Debug, Clone, Default, Component, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Component, Default)]
 pub struct RapierPickable;
 

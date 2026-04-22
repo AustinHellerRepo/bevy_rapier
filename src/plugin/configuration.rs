@@ -61,6 +61,7 @@ impl Default for TimestepMode {
 }
 
 #[derive(Component, Copy, Clone, Debug, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 /// A component for specifying configuration information for the physics simulation
 pub struct RapierConfiguration {
     /// Specifying the gravity of the physics simulation.
