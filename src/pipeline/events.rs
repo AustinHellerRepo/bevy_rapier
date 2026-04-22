@@ -30,6 +30,7 @@ pub enum CollisionEvent {
 /// This will only get triggered if the entity has the
 /// [`ActiveEvents::CONTACT_FORCE_EVENTS`] flag enabled.
 #[derive(Event, Copy, Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct ContactForceEvent {
     /// The first collider involved in the contact.
     pub collider1: Entity,

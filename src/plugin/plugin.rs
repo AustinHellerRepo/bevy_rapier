@@ -460,6 +460,7 @@ mod test {
     }
 
     #[derive(Component)]
+    #[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
     pub struct TestMarker;
 
     #[test]
