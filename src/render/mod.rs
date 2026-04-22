@@ -84,6 +84,7 @@ impl RapierDebugRenderPlugin {
 /// Context to control some aspect of the debug-renderer after initialization.
 #[derive(Resource, Reflect)]
 #[reflect(Resource)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 pub struct DebugRenderContext {
     /// Is the debug-rendering currently enabled?
     pub enabled: bool,
@@ -94,6 +95,7 @@ pub struct DebugRenderContext {
     /// Pipeline responsible for rendering. Access `pipeline.mode` and `pipeline.style`
     /// to modify the set of rendered elements, and modify the default coloring rules.
     #[reflect(ignore)]
+    #[cfg_attr(feature = "serde-serialize", serde(skip))]
     pub pipeline: DebugRenderPipeline,
 }
 
