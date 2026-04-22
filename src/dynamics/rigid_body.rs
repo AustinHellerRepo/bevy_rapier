@@ -156,6 +156,7 @@ impl Velocity {
 ///
 /// This only affects entities with a [`RigidBody`] component.
 #[derive(Copy, Clone, Debug, PartialEq, Component, Reflect)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[reflect(Component, Default, PartialEq)]
 pub enum AdditionalMassProperties {
     /// This mass will be added to the [`RigidBody`]. The rigid-body's total
