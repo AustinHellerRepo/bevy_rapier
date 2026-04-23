@@ -64,6 +64,12 @@ pub fn step_simulation<Hooks>(
         let context_colliders = &mut *context_colliders;
 
         if config.physics_pipeline_active {
+            crate::profiling_span!(
+                "systems_step_simulation",
+                active_bodies = context.islands.active_dynamic_bodies().len(),
+                total_bodies = rigidbody_set.bodies.len(),
+            );
+
             context.step_simulation(
                 context_colliders,
                 &mut joints,

@@ -713,6 +713,11 @@ impl RapierContextSimulation {
             &mut Query<(&RapierRigidBodyHandle, &mut TransformInterpolation)>,
         >,
     ) {
+        crate::profiling_span!(
+            "context_step_simulation",
+            active = self.islands.active_dynamic_bodies().len(),
+        );
+
         let event_queue = if events.is_some() {
             Some(EventQueue {
                 deleted_colliders: &self.deleted_colliders,

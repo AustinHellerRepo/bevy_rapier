@@ -63,6 +63,7 @@ async-collider = [
     "bevy/bevy_image",
 ]
 to-bevy-mesh = ["bevy/bevy_render", "bevy/bevy_asset"]
+profiling = ["dep:tracing", "dep:tracing-chrome"]
 
 [dependencies]
 bevy = { version = "0.16.0", default-features = false, features = ["std"] }
@@ -71,6 +72,8 @@ rapier3d = "0.27.0-beta.0"
 bitflags = "2.4"
 log = "0.4"
 serde = { version = "1", features = ["derive"], optional = true }
+tracing = { version = "0.1", optional = true }
+tracing-chrome = { version = "0.7", optional = true }
 
 [dev-dependencies]
 bevy = { version = "0.16.0", default-features = false, features = [

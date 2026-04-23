@@ -74,6 +74,8 @@ pub mod render;
 /// Miscellaneous helper functions.
 pub mod utils;
 
+pub mod profiling;
+
 /// Groups the most often used types.
 pub mod prelude {
     pub use crate::control::*;
