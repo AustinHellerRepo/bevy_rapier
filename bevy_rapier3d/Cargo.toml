@@ -63,7 +63,7 @@ async-collider = [
     "bevy/bevy_image",
 ]
 to-bevy-mesh = ["bevy/bevy_render", "bevy/bevy_asset"]
-profiling = ["dep:tracing", "dep:tracing-chrome"]
+profiling = ["dep:tracing", "dep:tracing-chrome", "rapier3d/profiling"]
 
 [dependencies]
 bevy = { version = "0.16.0", default-features = false, features = ["std"] }
